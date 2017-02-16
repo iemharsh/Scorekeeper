@@ -5,6 +5,6 @@
 <ul>
     @foreach(var player in Model)
     {
-        <li>@player.Name</li>    
+        <li><a asp-action="Details" asp-controller="Player" asp-route-id="@player.Id">@player.Name</a></li>    
     }
 </ul>

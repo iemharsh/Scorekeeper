@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.Models;
 using WebApplication.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication.Controllers 
 { 
@@ -34,5 +35,18 @@ namespace WebApplication.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult Details(int id)
+        {
+            var model = _context.Players.Include(e => e.Scores).FirstOrDefault(e => e.Id == id);
+            return View(model);
+        }
+
+        public IActionResult AddScore(int id, int value) 
+        {
+            _context.Players.Include(e => e.Scores).FirstOrDefault(e => e.Id == id).Scores.Add(new Score{ Value = value});
+            _context.SaveChanges();
+            return RedirectToAction("Details", "Player", new {Id = id});
+        }
+
     }
 }

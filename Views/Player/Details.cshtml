@@ -1,0 +1,19 @@
+@model WebApplication.Models.Player
+
+<h1>@Model.Name</h1>
+@Html.DisplayForModel()
+
+<form asp-action="AddScore" asp-controller="Player" asp-route-id="@Model.Id">
+    <input type="number" name="Value"/>
+    <input type="submit" value="Add Score" />
+    
+</form>
+
+
+<h3>Scores</h3>
+<ul>
+    @foreach(var score in Model.Scores) 
+    {
+        <li>@score.Value</li>
+    }
+</ul>
