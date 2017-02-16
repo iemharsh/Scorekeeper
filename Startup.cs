@@ -48,6 +48,8 @@ namespace WebApplication
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlite("Data Source=productsDb.sqlite"));
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -69,6 +71,17 @@ namespace WebApplication
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope())
+                {
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                            .Database.EnsureDeleted();
+                    serviceScope.ServiceProvider.GetService<ApplicationDbContext>()
+                            .Database.EnsureCreated();
+                }
+
+
             }
 
             app.UseStaticFiles();
