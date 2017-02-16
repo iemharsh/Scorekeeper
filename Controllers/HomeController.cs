@@ -31,5 +31,9 @@ namespace WebApplication.Controllers
         {
             return View();
         }
+        public IActionResult MyView() 
+        {
+            return View();
+        }
     }
 }
